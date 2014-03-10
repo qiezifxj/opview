@@ -9,9 +9,9 @@ v1.0.0
 
 install
 ======
-phpize
-./configure --with-php-config=/path-of-php/php-config
-make && make install
+    phpize
+    ./configure --with-php-config=/path-of-php/php-config
+    make && make install
 
 functions available
 ======
