@@ -1,6 +1,8 @@
 #include "php.h"
 #include "zend_vm_opcodes.h"
+
 #include "opdump.h"
+#include "ophandler.h"
 
 zval * opcode_to_array(zend_op *op TSRMLS_DC){
 
@@ -21,6 +23,14 @@ zval * opcode_to_array(zend_op *op TSRMLS_DC){
     add_assoc_zval(array, "op1", zop1);
     add_assoc_zval(array, "op2", zop2);
     add_assoc_zval(array, "result", res);
+
+    char * shandler = get_op_handler(op->opcode, op);
+
+    zval * zhandler;
+    MAKE_STD_ZVAL(zhandler);
+    ZVAL_STRING(zhandler, shandler, 1);
+
+    add_assoc_zval(array, "handler", zhandler);
 
     return array;
 }

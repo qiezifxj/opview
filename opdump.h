@@ -9,4 +9,10 @@ zval * format_znode_op(znode_op *op, zend_uchar type TSRMLS_DC);
 
 char * format_zval(zval * z);
 
+#define RETURN_IF_NULL(val, ret)	\
+		{							\
+			if(NULL == val)			\
+				return ret;			\
+		}
+
 #endif
