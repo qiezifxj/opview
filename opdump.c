@@ -1,8 +1,6 @@
 #include "php.h"
 #include "zend_vm_opcodes.h"
-
 #include "opdump.h"
-#include "ophandler.h"
 
 zval * opcode_to_array(zend_op *op TSRMLS_DC){
 
@@ -12,7 +10,9 @@ zval * opcode_to_array(zend_op *op TSRMLS_DC){
 
     zval * opname;
     MAKE_STD_ZVAL(opname);
-    ZVAL_STRING(opname, zend_get_opcode_name(op->opcode), 1);
+    char * s_opname = zend_get_opcode_name(op->opcode);
+    if( ! s_opname) s_opname = "<i>Unknown</i>";
+    ZVAL_STRING(opname, s_opname, 1);
 
     add_assoc_zval(array, "opname", opname);
 
@@ -20,17 +20,11 @@ zval * opcode_to_array(zend_op *op TSRMLS_DC){
     zval *zop2  = format_znode_op(&op->op2, op->op2_type TSRMLS_CC);
     zval *res   = format_znode_op(&op->result, op->result_type TSRMLS_CC);
 
+
+
     add_assoc_zval(array, "op1", zop1);
     add_assoc_zval(array, "op2", zop2);
     add_assoc_zval(array, "result", res);
-
-    char * shandler = get_op_handler(op->opcode, op);
-
-    zval * zhandler;
-    MAKE_STD_ZVAL(zhandler);
-    ZVAL_STRING(zhandler, shandler, 1);
-
-    add_assoc_zval(array, "handler", zhandler);
 
     return array;
 }
